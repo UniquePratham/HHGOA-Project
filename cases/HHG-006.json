@@ -1,0 +1,232 @@
+{
+  "case_id": "HHG-006",
+  "benchmark_id": 6,
+  "investigation_record": {
+    "target_transaction": "TX_RING_108",
+    "subject_user": "USR_108",
+    "subject_card": "CARD_108",
+    "amount": 4800.0,
+    "upstream_model_risk": 89.0,
+    "evaluated_typology": "Velocity Mule Ring",
+    "initial_trigger": {
+      "trigger_type": "HIGH_RISK_SCORE",
+      "source_id": "TX_RING_108",
+      "initial_score": 89.0,
+      "description": "Transaction TX_RING_108 flagged with model risk 89.0",
+      "timestamp": "2026-09-24T17:39:11.576940+00:00"
+    },
+    "graph_risk_indicators": {
+      "transaction_id": "TX_RING_108",
+      "amount": 4900.0,
+      "model_risk_score": 92.5,
+      "card_id": "CARD_108",
+      "user_id": "USR_108",
+      "device_id": "DEV_RING_888",
+      "ip_id": "IP_TOR_99",
+      "shared_device_count": 8,
+      "is_emulator": true,
+      "foreign_ip": true,
+      "is_new_device": true,
+      "has_cycles": true,
+      "mule_ring_detected": true,
+      "card_velocity_15m": 1,
+      "micro_auth_spinning": false
+    },
+    "uncertainty_pre_evidence": {
+      "information_completeness_index": 0.8,
+      "risk_score": 95.0,
+      "confidence": 0.9,
+      "missing_critical_signals": [
+        "Unconfirmed Cardholder Authorization"
+      ],
+      "can_defensively_act": true,
+      "requires_step_up": false,
+      "reasoning": "Information completeness (0.80) and risk score (95.0) provide sufficient defensibility to finalize case action."
+    },
+    "uncertainty_post_evidence": {
+      "information_completeness_index": 1.0,
+      "risk_score": 100.0,
+      "confidence": 1.0,
+      "missing_critical_signals": [],
+      "can_defensively_act": true,
+      "requires_step_up": false,
+      "reasoning": "Information completeness (1.00) and risk score (100.0) provide sufficient defensibility to finalize case action."
+    },
+    "similar_past_cases_found": 2
+  },
+  "evidence_gathered": [
+    {
+      "id": "EV-CASE-TX_RING_108-01",
+      "type": "OBSERVED_FACT",
+      "severity": "CRITICAL",
+      "title": "Shared Device Syndicate Detected",
+      "description": "Device DEV_RING_888 is linked to 8 distinct accounts.",
+      "source": "TigerGraph GSQL: detect_shared_device_ring",
+      "detected_at": "2026-09-24T17:39:11.576940+00:00",
+      "confidence": 0.98,
+      "raw_data": {
+        "device_id": "DEV_RING_888",
+        "count": 8
+      },
+      "affected_entities": [
+        "USR_108"
+      ],
+      "remediation_hint": null
+    },
+    {
+      "id": "EV-CASE-TX_RING_108-02",
+      "type": "OBSERVED_FACT",
+      "severity": "HIGH",
+      "title": "Anonymized Proxy / Tor IP Connection",
+      "description": "Transaction originated via suspicious routing node IP_TOR_99.",
+      "source": "Network Intelligence IP Layer",
+      "detected_at": "2026-09-24T17:39:11.576940+00:00",
+      "confidence": 0.95,
+      "raw_data": {
+        "ip_id": "IP_TOR_99"
+      },
+      "affected_entities": [],
+      "remediation_hint": null
+    },
+    {
+      "id": "EV-TYP-TYP-01",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Account Takeover (ATO)",
+      "description": "Legitimate credentials compromised; unauthorized actor accesses account via new device/IP and initiates rapid fund drain or high-value purchase.",
+      "source": "GraphRAG Typology Knowledge Base",
+      "detected_at": "2026-09-24T17:39:11.576940+00:00",
+      "confidence": 0.88,
+      "raw_data": {},
+      "affected_entities": [],
+      "remediation_hint": "Request Step-Up Biometric / SMS OTP auth to original verified cardholder phone."
+    },
+    {
+      "id": "EV-TYP-TYP-03",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Synthetic Identity Fraud",
+      "description": "Fabricated identity constructed by combining legitimate SSN fragments with fake names, shared email domains, and burner devices.",
+      "source": "GraphRAG Typology Knowledge Base",
+      "detected_at": "2026-09-24T17:39:11.576940+00:00",
+      "confidence": 0.88,
+      "raw_data": {},
+      "affected_entities": [],
+      "remediation_hint": "Freeze account and escalate to Tier-2 Fraud Officer for document re-verification."
+    },
+    {
+      "id": "EV-TYP-TYP-04",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Velocity Mule Ring / Smurfing",
+      "description": "Network of connected collusive accounts moving funds rapidly in cyclic or layered paths to evade $5k/$10k BSA detection thresholds.",
+      "source": "GraphRAG Typology Knowledge Base",
+      "detected_at": "2026-09-24T17:39:11.576940+00:00",
+      "confidence": 0.88,
+      "raw_data": {},
+      "affected_entities": [],
+      "remediation_hint": "Freeze all accounts in detected component and file mandatory FinCEN SAR."
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "EV-CASE-TX_RING_108-01",
+      "type": "OBSERVED_FACT",
+      "severity": "CRITICAL",
+      "title": "Shared Device Syndicate Detected",
+      "description": "Device DEV_RING_888 is linked to 8 distinct accounts.",
+      "confidence": 0.98,
+      "source": "TigerGraph GSQL: detect_shared_device_ring"
+    },
+    {
+      "finding_id": "EV-CASE-TX_RING_108-02",
+      "type": "OBSERVED_FACT",
+      "severity": "HIGH",
+      "title": "Anonymized Proxy / Tor IP Connection",
+      "description": "Transaction originated via suspicious routing node IP_TOR_99.",
+      "confidence": 0.95,
+      "source": "Network Intelligence IP Layer"
+    },
+    {
+      "finding_id": "EV-TYP-TYP-01",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Account Takeover (ATO)",
+      "description": "Legitimate credentials compromised; unauthorized actor accesses account via new device/IP and initiates rapid fund drain or high-value purchase.",
+      "confidence": 0.88,
+      "source": "GraphRAG Typology Knowledge Base"
+    },
+    {
+      "finding_id": "EV-TYP-TYP-03",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Synthetic Identity Fraud",
+      "description": "Fabricated identity constructed by combining legitimate SSN fragments with fake names, shared email domains, and burner devices.",
+      "confidence": 0.88,
+      "source": "GraphRAG Typology Knowledge Base"
+    },
+    {
+      "finding_id": "EV-TYP-TYP-04",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Velocity Mule Ring / Smurfing",
+      "description": "Network of connected collusive accounts moving funds rapidly in cyclic or layered paths to evade $5k/$10k BSA detection thresholds.",
+      "confidence": 0.88,
+      "source": "GraphRAG Typology Knowledge Base"
+    }
+  ],
+  "decisions_and_actions_taken": [
+    "Pre-evidence action: BLOCK_TRANSACTION (Route: TIER_2_SENIOR_FRAUD_OFFICER)",
+    "Step-up verification challenge issued: BIOMETRIC_PUSH",
+    "Step-up response received: TIMEOUT_NO_RESPONSE",
+    "Post-evidence action: BLOCK_TRANSACTION (Route: COMPLIANCE_DIRECTOR)",
+    "Final case resolution: RESOLVED_CONFIRMED_FRAUD",
+    "Suspicious Activity Report draft created: SAR-CASE-TX_RING_108"
+  ],
+  "written_to_graph": true,
+  "graph_write_back_details": {
+    "case_vertex_id": "CASE-TX_RING_108",
+    "status": "COMMITTED",
+    "edges_written": 1,
+    "graph_target": "FraudGraph"
+  },
+  "suspicious_activity_report": {
+    "sar_id": "SAR-CASE-TX_RING_108",
+    "filing_required": true,
+    "filing_reason": "Aggregate amount ($4,900.00) and confirmed pattern (Money Laundering / Layering / Mule Network) exceed FinCEN thresholds.",
+    "fin_cen_category": "Money Laundering / Layering / Mule Network",
+    "narrative": "SUSPICIOUS ACTIVITY REPORT (FINCEN FILING DRAFT)\nCase Identifier: CASE-TX_RING_108\nDate of Report: 2026-09-24T17:39:11.577236+00:00\nSubject Identity: USR_108\nIdentified Typologies: Account Takeover (ATO), Synthetic Identity Fraud, Velocity Mule Ring / Smurfing\nAggregate Amount: $4,900.00 across 1 suspect transactions.\n\nSUMMARY OF SUSPICIOUS ACTIVITY:\nThe financial institution's automated graph intelligence system detected abnormal transaction patterns involving customer account USR_108. Analysis of the transaction graph revealed the following verified evidence:\n1. Device DEV_RING_888 is linked to 8 distinct accounts.\n2. Transaction originated via suspicious routing node IP_TOR_99.\n\nREGULATORY ASSESSMENT & ACTIONS TAKEN:\nThe observed activity violates Bank Fraud Defense Operational Standard 3.1 and 31 CFR § 1020.320. The institution has placed defensive administrative holds on affected card and account instruments. This filing is submitted for compliance review and statutory archiving.",
+    "primary_subjects": [
+      "USR_108"
+    ],
+    "suspect_transactions": [
+      "TX_RING_108"
+    ],
+    "total_dollar_amount": 4900.0,
+    "generated_at": "2026-09-24T17:39:11.577236+00:00",
+    "compliance_signoff_needed": true
+  },
+  "next_best_action_before_additional_evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "rationale": "Immediate critical graph pattern detected (Risk 95.0). Shared syndicate or automated micro-spinning requires immediate hard defense prior to customer outreach.",
+    "approval_route": {
+      "required_route": "TIER_2_SENIOR_FRAUD_OFFICER",
+      "requires_human_approval": true,
+      "approver_role": "TIER_2_SENIOR_FRAUD_OFFICER"
+    }
+  },
+  "next_best_action_after_additional_evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "rationale": "Step-up status 'TIMEOUT_NO_RESPONSE' confirms unauthorized attempt. Total amount $4,900.00 with risk 100.0 warrants blocking and policy remediation.",
+    "approval_route": {
+      "required_route": "COMPLIANCE_DIRECTOR",
+      "requires_human_approval": true,
+      "approver_role": "COMPLIANCE_DIRECTOR"
+    }
+  },
+  "metadata": {
+    "agent_version": "1.0.0",
+    "rules_version": "1.0.0",
+    "graph_gateway_mode": "fixture"
+  }
+}

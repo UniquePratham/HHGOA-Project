@@ -1,0 +1,255 @@
+{
+  "case_id": "HHG-003",
+  "benchmark_id": 3,
+  "investigation_record": {
+    "target_transaction": "TX_SPIN_4",
+    "subject_user": "USR_106",
+    "subject_card": "CARD_106",
+    "amount": 850.0,
+    "upstream_model_risk": 88.0,
+    "evaluated_typology": "Card Testing / Micro-Spinning",
+    "initial_trigger": {
+      "trigger_type": "HIGH_RISK_SCORE",
+      "source_id": "TX_SPIN_4",
+      "initial_score": 88.0,
+      "description": "Transaction TX_SPIN_4 flagged with model risk 88.0",
+      "timestamp": "2026-09-24T17:39:11.574795+00:00"
+    },
+    "graph_risk_indicators": {
+      "transaction_id": "TX_SPIN_4",
+      "amount": 850.0,
+      "model_risk_score": 88.0,
+      "card_id": "CARD_106",
+      "user_id": "USR_106",
+      "device_id": "DEV_RING_888",
+      "ip_id": null,
+      "shared_device_count": 8,
+      "is_emulator": true,
+      "foreign_ip": false,
+      "is_new_device": true,
+      "has_cycles": true,
+      "mule_ring_detected": true,
+      "card_velocity_15m": 4,
+      "micro_auth_spinning": true
+    },
+    "uncertainty_pre_evidence": {
+      "information_completeness_index": 0.6,
+      "risk_score": 95.0,
+      "confidence": 0.8,
+      "missing_critical_signals": [
+        "Missing Geolocation/IP Intelligence",
+        "Unconfirmed Cardholder Authorization"
+      ],
+      "can_defensively_act": true,
+      "requires_step_up": false,
+      "reasoning": "Information completeness (0.60) and risk score (95.0) provide sufficient defensibility to finalize case action."
+    },
+    "uncertainty_post_evidence": {
+      "information_completeness_index": 0.8,
+      "risk_score": 100.0,
+      "confidence": 0.9,
+      "missing_critical_signals": [
+        "Missing Geolocation/IP Intelligence"
+      ],
+      "can_defensively_act": true,
+      "requires_step_up": false,
+      "reasoning": "Information completeness (0.80) and risk score (100.0) provide sufficient defensibility to finalize case action."
+    },
+    "similar_past_cases_found": 2
+  },
+  "evidence_gathered": [
+    {
+      "id": "EV-CASE-TX_SPIN_4-01",
+      "type": "OBSERVED_FACT",
+      "severity": "CRITICAL",
+      "title": "Shared Device Syndicate Detected",
+      "description": "Device DEV_RING_888 is linked to 8 distinct accounts.",
+      "source": "TigerGraph GSQL: detect_shared_device_ring",
+      "detected_at": "2026-09-24T17:39:11.574795+00:00",
+      "confidence": 0.98,
+      "raw_data": {
+        "device_id": "DEV_RING_888",
+        "count": 8
+      },
+      "affected_entities": [
+        "USR_106"
+      ],
+      "remediation_hint": null
+    },
+    {
+      "id": "EV-CASE-TX_SPIN_4-03",
+      "type": "OBSERVED_FACT",
+      "severity": "CRITICAL",
+      "title": "Card Micro-Spinning Sequence Observed",
+      "description": "Sequence of low-dollar tests observed within a 15-minute window.",
+      "source": "Transaction Velocity Engine",
+      "detected_at": "2026-09-24T17:39:11.574795+00:00",
+      "confidence": 0.92,
+      "raw_data": {},
+      "affected_entities": [],
+      "remediation_hint": null
+    },
+    {
+      "id": "EV-TYP-TYP-01",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Account Takeover (ATO)",
+      "description": "Legitimate credentials compromised; unauthorized actor accesses account via new device/IP and initiates rapid fund drain or high-value purchase.",
+      "source": "GraphRAG Typology Knowledge Base",
+      "detected_at": "2026-09-24T17:39:11.574795+00:00",
+      "confidence": 0.88,
+      "raw_data": {},
+      "affected_entities": [],
+      "remediation_hint": "Request Step-Up Biometric / SMS OTP auth to original verified cardholder phone."
+    },
+    {
+      "id": "EV-TYP-TYP-02",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Card Testing / Micro-Spinning",
+      "description": "Automated scripts testing stolen credit card batches on digital merchants using low-dollar authorizations before executing large fraud orders.",
+      "source": "GraphRAG Typology Knowledge Base",
+      "detected_at": "2026-09-24T17:39:11.574795+00:00",
+      "confidence": 0.88,
+      "raw_data": {},
+      "affected_entities": [],
+      "remediation_hint": "Immediate automated card authorization block and merchant terminal velocity quarantine."
+    },
+    {
+      "id": "EV-TYP-TYP-03",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Synthetic Identity Fraud",
+      "description": "Fabricated identity constructed by combining legitimate SSN fragments with fake names, shared email domains, and burner devices.",
+      "source": "GraphRAG Typology Knowledge Base",
+      "detected_at": "2026-09-24T17:39:11.574795+00:00",
+      "confidence": 0.88,
+      "raw_data": {},
+      "affected_entities": [],
+      "remediation_hint": "Freeze account and escalate to Tier-2 Fraud Officer for document re-verification."
+    },
+    {
+      "id": "EV-TYP-TYP-04",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Velocity Mule Ring / Smurfing",
+      "description": "Network of connected collusive accounts moving funds rapidly in cyclic or layered paths to evade $5k/$10k BSA detection thresholds.",
+      "source": "GraphRAG Typology Knowledge Base",
+      "detected_at": "2026-09-24T17:39:11.574795+00:00",
+      "confidence": 0.88,
+      "raw_data": {},
+      "affected_entities": [],
+      "remediation_hint": "Freeze all accounts in detected component and file mandatory FinCEN SAR."
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "EV-CASE-TX_SPIN_4-01",
+      "type": "OBSERVED_FACT",
+      "severity": "CRITICAL",
+      "title": "Shared Device Syndicate Detected",
+      "description": "Device DEV_RING_888 is linked to 8 distinct accounts.",
+      "confidence": 0.98,
+      "source": "TigerGraph GSQL: detect_shared_device_ring"
+    },
+    {
+      "finding_id": "EV-CASE-TX_SPIN_4-03",
+      "type": "OBSERVED_FACT",
+      "severity": "CRITICAL",
+      "title": "Card Micro-Spinning Sequence Observed",
+      "description": "Sequence of low-dollar tests observed within a 15-minute window.",
+      "confidence": 0.92,
+      "source": "Transaction Velocity Engine"
+    },
+    {
+      "finding_id": "EV-TYP-TYP-01",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Account Takeover (ATO)",
+      "description": "Legitimate credentials compromised; unauthorized actor accesses account via new device/IP and initiates rapid fund drain or high-value purchase.",
+      "confidence": 0.88,
+      "source": "GraphRAG Typology Knowledge Base"
+    },
+    {
+      "finding_id": "EV-TYP-TYP-02",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Card Testing / Micro-Spinning",
+      "description": "Automated scripts testing stolen credit card batches on digital merchants using low-dollar authorizations before executing large fraud orders.",
+      "confidence": 0.88,
+      "source": "GraphRAG Typology Knowledge Base"
+    },
+    {
+      "finding_id": "EV-TYP-TYP-03",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Synthetic Identity Fraud",
+      "description": "Fabricated identity constructed by combining legitimate SSN fragments with fake names, shared email domains, and burner devices.",
+      "confidence": 0.88,
+      "source": "GraphRAG Typology Knowledge Base"
+    },
+    {
+      "finding_id": "EV-TYP-TYP-04",
+      "type": "INFERENCE",
+      "severity": "HIGH",
+      "title": "Typology Match: Velocity Mule Ring / Smurfing",
+      "description": "Network of connected collusive accounts moving funds rapidly in cyclic or layered paths to evade $5k/$10k BSA detection thresholds.",
+      "confidence": 0.88,
+      "source": "GraphRAG Typology Knowledge Base"
+    }
+  ],
+  "decisions_and_actions_taken": [
+    "Pre-evidence action: BLOCK_TRANSACTION (Route: TIER_2_SENIOR_FRAUD_OFFICER)",
+    "Step-up verification challenge issued: BIOMETRIC_PUSH",
+    "Step-up response received: FAILED_VERIFICATION",
+    "Post-evidence action: BLOCK_TRANSACTION (Route: COMPLIANCE_DIRECTOR)",
+    "Final case resolution: RESOLVED_CONFIRMED_FRAUD",
+    "Suspicious Activity Report draft created: SAR-CASE-TX_SPIN_4"
+  ],
+  "written_to_graph": true,
+  "graph_write_back_details": {
+    "case_vertex_id": "CASE-TX_SPIN_4",
+    "status": "COMMITTED",
+    "edges_written": 1,
+    "graph_target": "FraudGraph"
+  },
+  "suspicious_activity_report": {
+    "sar_id": "SAR-CASE-TX_SPIN_4",
+    "filing_required": true,
+    "filing_reason": "Aggregate amount ($850.00) and confirmed pattern (Money Laundering / Layering / Mule Network) exceed FinCEN thresholds.",
+    "fin_cen_category": "Money Laundering / Layering / Mule Network",
+    "narrative": "SUSPICIOUS ACTIVITY REPORT (FINCEN FILING DRAFT)\nCase Identifier: CASE-TX_SPIN_4\nDate of Report: 2026-09-24T17:39:11.575123+00:00\nSubject Identity: USR_106\nIdentified Typologies: Account Takeover (ATO), Card Testing / Micro-Spinning, Synthetic Identity Fraud, Velocity Mule Ring / Smurfing\nAggregate Amount: $850.00 across 1 suspect transactions.\n\nSUMMARY OF SUSPICIOUS ACTIVITY:\nThe financial institution's automated graph intelligence system detected abnormal transaction patterns involving customer account USR_106. Analysis of the transaction graph revealed the following verified evidence:\n1. Device DEV_RING_888 is linked to 8 distinct accounts.\n2. Sequence of low-dollar tests observed within a 15-minute window.\n\nREGULATORY ASSESSMENT & ACTIONS TAKEN:\nThe observed activity violates Bank Fraud Defense Operational Standard 3.1 and 31 CFR § 1020.320. The institution has placed defensive administrative holds on affected card and account instruments. This filing is submitted for compliance review and statutory archiving.",
+    "primary_subjects": [
+      "USR_106"
+    ],
+    "suspect_transactions": [
+      "TX_SPIN_4"
+    ],
+    "total_dollar_amount": 850.0,
+    "generated_at": "2026-09-24T17:39:11.575123+00:00",
+    "compliance_signoff_needed": true
+  },
+  "next_best_action_before_additional_evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "rationale": "Immediate critical graph pattern detected (Risk 95.0). Shared syndicate or automated micro-spinning requires immediate hard defense prior to customer outreach.",
+    "approval_route": {
+      "required_route": "TIER_2_SENIOR_FRAUD_OFFICER",
+      "requires_human_approval": true,
+      "approver_role": "TIER_2_SENIOR_FRAUD_OFFICER"
+    }
+  },
+  "next_best_action_after_additional_evidence": {
+    "action": "BLOCK_TRANSACTION",
+    "rationale": "Step-up status 'FAILED_VERIFICATION' confirms unauthorized attempt. Total amount $850.00 with risk 100.0 warrants blocking and policy remediation.",
+    "approval_route": {
+      "required_route": "COMPLIANCE_DIRECTOR",
+      "requires_human_approval": true,
+      "approver_role": "COMPLIANCE_DIRECTOR"
+    }
+  },
+  "metadata": {
+    "agent_version": "1.0.0",
+    "rules_version": "1.0.0",
+    "graph_gateway_mode": "fixture"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "case_id": "HHG-002",
+  "benchmark_id": 2,
+  "investigation_record": {
+    "target_transaction": "TX_SAFE_101",
+    "subject_user": "USR_101",
+    "subject_card": "CARD_101",
+    "amount": 45.2,
+    "upstream_model_risk": 12.0,
+    "evaluated_typology": "Legitimate Normal POS Activity",
+    "initial_trigger": {
+      "trigger_type": "ANALYST_QUERY",
+      "source_id": "TX_SAFE_101",
+      "initial_score": 12.0,
+      "description": "Transaction TX_SAFE_101 flagged with model risk 12.0",
+      "timestamp": "2026-09-24T17:39:11.574124+00:00"
+    },
+    "graph_risk_indicators": {
+      "transaction_id": "TX_SAFE_101",
+      "amount": 45.2,
+      "model_risk_score": 8.5,
+      "card_id": "CARD_101",
+      "user_id": "USR_101",
+      "device_id": "DEV_SAFE_01",
+      "ip_id": "IP_RES_01",
+      "shared_device_count": 1,
+      "is_emulator": false,
+      "foreign_ip": false,
+      "is_new_device": false,
+      "has_cycles": false,
+      "mule_ring_detected": false,
+      "card_velocity_15m": 1,
+      "micro_auth_spinning": false
+    },
+    "uncertainty_pre_evidence": {
+      "information_completeness_index": 0.8,
+      "risk_score": 12.0,
+      "confidence": 0.9,
+      "missing_critical_signals": [
+        "Unconfirmed Cardholder Authorization"
+      ],
+      "can_defensively_act": true,
+      "requires_step_up": false,
+      "reasoning": "Information completeness (0.80) and risk score (12.0) provide sufficient defensibility to finalize case action."
+    },
+    "uncertainty_post_evidence": {
+      "information_completeness_index": 1.0,
+      "risk_score": 12.0,
+      "confidence": 1.0,
+      "missing_critical_signals": [],
+      "can_defensively_act": true,
+      "requires_step_up": false,
+      "reasoning": "Information completeness (1.00) and risk score (12.0) provide sufficient defensibility to finalize case action."
+    },
+    "similar_past_cases_found": 2
+  },
+  "evidence_gathered": [],
+  "findings": [],
+  "decisions_and_actions_taken": [
+    "Pre-evidence action: ALLOW_TRANSACTION (Route: AUTOMATED)",
+    "Step-up verification challenge issued: SMS_OTP",
+    "Step-up response received: CONFIRMED_LEGITIMATE",
+    "Post-evidence action: ALLOW_TRANSACTION (Route: AUTOMATED)",
+    "Final case resolution: RESOLVED_CLEARED"
+  ],
+  "written_to_graph": true,
+  "graph_write_back_details": {
+    "case_vertex_id": "CASE-TX_SAFE_101",
+    "status": "COMMITTED",
+    "edges_written": 1,
+    "graph_target": "FraudGraph"
+  },
+  "suspicious_activity_report": null,
+  "next_best_action_before_additional_evidence": {
+    "action": "ALLOW_TRANSACTION",
+    "rationale": "Low initial risk (12.0) and clean graph indicators warrant normal transaction authorization.",
+    "approval_route": {
+      "required_route": "AUTOMATED",
+      "requires_human_approval": false,
+      "approver_role": "AUTOMATED"
+    }
+  },
+  "next_best_action_after_additional_evidence": {
+    "action": "ALLOW_TRANSACTION",
+    "rationale": "Cardholder successfully passed step-up verification and confirmed authorization of transaction.",
+    "approval_route": {
+      "required_route": "AUTOMATED",
+      "requires_human_approval": false,
+      "approver_role": "AUTOMATED"
+    }
+  },
+  "metadata": {
+    "agent_version": "1.0.0",
+    "rules_version": "1.0.0",
+    "graph_gateway_mode": "fixture"
+  }
+}

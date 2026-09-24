@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Build artifacts
+.next/
+out/
+dist/
+*.egg-info/
+
+# Environment & secrets
+.env
+.env.local
+.env.production
+.env.*.local
+
+# IDE & editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Testing & caches
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Agent development artifacts (not for submission)
+.agent/
+.agents/
+skills-lock.json
+artifacts/superpowers/
+artifacts/prompt.txt
+artifacts/benchmark_answers/
+
+# Internal documentation (not for public repo)
+docs/
+
+# Logs
+*.log
+logs/
+
+# Vercel
+.vercel/

@@ -1,0 +1,95 @@
+{
+  "case_id": "HHG-007",
+  "benchmark_id": 7,
+  "investigation_record": {
+    "target_transaction": "TX_BENCH_07",
+    "subject_user": "USR_105",
+    "subject_card": "CARD_105",
+    "amount": 310.0,
+    "upstream_model_risk": 48.0,
+    "evaluated_typology": "Ambiguous E-Commerce Spike",
+    "initial_trigger": {
+      "trigger_type": "ANALYST_QUERY",
+      "source_id": "TX_BENCH_07",
+      "initial_score": 48.0,
+      "description": "Transaction TX_BENCH_07 flagged with model risk 48.0",
+      "timestamp": "2026-09-24T17:39:11.577729+00:00"
+    },
+    "graph_risk_indicators": {
+      "transaction_id": "TX_BENCH_07",
+      "amount": 100.0,
+      "model_risk_score": 50.0,
+      "shared_device_count": 1,
+      "is_new_device": false,
+      "foreign_ip": false,
+      "has_cycles": false,
+      "card_velocity_15m": 1
+    },
+    "uncertainty_pre_evidence": {
+      "information_completeness_index": 0.4,
+      "risk_score": 48.0,
+      "confidence": 0.7,
+      "missing_critical_signals": [
+        "Missing Device Fingerprint",
+        "Missing Geolocation/IP Intelligence",
+        "Unconfirmed Cardholder Authorization"
+      ],
+      "can_defensively_act": false,
+      "requires_step_up": true,
+      "reasoning": "Risk score (48.0) is elevated but ambiguous (ICI: 0.40). Additional evidence needed from cardholder before defensible blocking/clearing."
+    },
+    "uncertainty_post_evidence": {
+      "information_completeness_index": 0.6,
+      "risk_score": 20.0,
+      "confidence": 0.8,
+      "missing_critical_signals": [
+        "Missing Device Fingerprint",
+        "Missing Geolocation/IP Intelligence"
+      ],
+      "can_defensively_act": true,
+      "requires_step_up": false,
+      "reasoning": "Information completeness (0.60) and risk score (20.0) provide sufficient defensibility to finalize case action."
+    },
+    "similar_past_cases_found": 2
+  },
+  "evidence_gathered": [],
+  "findings": [],
+  "decisions_and_actions_taken": [
+    "Pre-evidence action: REQUEST_STEP_UP_AUTH (Route: AUTOMATED)",
+    "Step-up verification challenge issued: BIOMETRIC_PUSH",
+    "Step-up response received: CONFIRMED_LEGITIMATE",
+    "Post-evidence action: ALLOW_TRANSACTION (Route: AUTOMATED)",
+    "Final case resolution: RESOLVED_CLEARED"
+  ],
+  "written_to_graph": true,
+  "graph_write_back_details": {
+    "case_vertex_id": "CASE-TX_BENCH_07",
+    "status": "COMMITTED",
+    "edges_written": 1,
+    "graph_target": "FraudGraph"
+  },
+  "suspicious_activity_report": null,
+  "next_best_action_before_additional_evidence": {
+    "action": "REQUEST_STEP_UP_AUTH",
+    "rationale": "Risk (48.0) is elevated but identity is unconfirmed (ICI: 0.40). Policy dictates step-up auth challenge before hard block.",
+    "approval_route": {
+      "required_route": "AUTOMATED",
+      "requires_human_approval": false,
+      "approver_role": "AUTOMATED"
+    }
+  },
+  "next_best_action_after_additional_evidence": {
+    "action": "ALLOW_TRANSACTION",
+    "rationale": "Cardholder successfully passed step-up verification and confirmed authorization of transaction.",
+    "approval_route": {
+      "required_route": "AUTOMATED",
+      "requires_human_approval": false,
+      "approver_role": "AUTOMATED"
+    }
+  },
+  "metadata": {
+    "agent_version": "1.0.0",
+    "rules_version": "1.0.0",
+    "graph_gateway_mode": "fixture"
+  }
+}

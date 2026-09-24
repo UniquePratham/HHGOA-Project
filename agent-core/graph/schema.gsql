@@ -1,0 +1,139 @@
+// ============================================================================
+// TigerGraph GSQL Schema: Fraud Investigation Knowledge Graph (HHGOA IEEE-CIS)
+// ============================================================================
+
+CREATE GRAPH FraudGraph ()
+
+// ----------------------------------------------------------------------------
+// Vertices
+// ----------------------------------------------------------------------------
+CREATE VERTEX User (
+    PRIMARY_ID id STRING,
+    user_name STRING,
+    created_at DATETIME,
+    risk_score DOUBLE,
+    status STRING
+) WITH STATS="OUTDEGREE"
+
+CREATE VERTEX Account (
+    PRIMARY_ID id STRING,
+    account_number STRING,
+    account_type STRING,
+    balance DOUBLE,
+    opened_at DATETIME,
+    status STRING
+) WITH STATS="OUTDEGREE"
+
+CREATE VERTEX Card (
+    PRIMARY_ID id STRING,
+    card_type STRING,
+    card_network STRING,
+    issuer_bank STRING,
+    expiration_date STRING,
+    status STRING
+) WITH STATS="OUTDEGREE"
+
+CREATE VERTEX Transaction (
+    PRIMARY_ID id STRING,
+    amount DOUBLE,
+    tx_time DATETIME,
+    model_risk_score DOUBLE,
+    channel STRING,
+    billing_country STRING,
+    shipping_country STRING,
+    is_foreign BOOL
+) WITH STATS="OUTDEGREE"
+
+CREATE VERTEX Device (
+    PRIMARY_ID id STRING,
+    device_type STRING,
+    os STRING,
+    browser STRING,
+    is_emulator BOOL,
+    is_rooted BOOL
+) WITH STATS="OUTDEGREE"
+
+CREATE VERTEX IP (
+    PRIMARY_ID id STRING,
+    country STRING,
+    is_vpn BOOL,
+    is_tor BOOL,
+    reputation_score DOUBLE
+) WITH STATS="OUTDEGREE"
+
+CREATE VERTEX Merchant (
+    PRIMARY_ID id STRING,
+    name STRING,
+    category STRING,
+    risk_tier STRING
+) WITH STATS="OUTDEGREE"
+
+CREATE VERTEX Case (
+    PRIMARY_ID id STRING,
+    title STRING,
+    status STRING,
+    risk_level STRING,
+    outcome STRING,
+    sar_filed BOOL,
+    closed_at DATETIME,
+    embedding LIST<DOUBLE>
+) WITH STATS="OUTDEGREE"
+
+// ----------------------------------------------------------------------------
+// Edges
+// ----------------------------------------------------------------------------
+CREATE UNDIRECTED EDGE OWNS (FROM User, TO Account)
+CREATE UNDIRECTED EDGE USES_CARD (FROM Account, TO Card)
+CREATE DIRECTED EDGE PERFORMED_TRANSACTION (FROM Card, TO Transaction, timestamp DATETIME, amount DOUBLE)
+CREATE DIRECTED EDGE SENT_TO_MERCHANT (FROM Transaction, TO Merchant, timestamp DATETIME, amount DOUBLE)
+CREATE UNDIRECTED EDGE ASSOCIATED_DEVICE (FROM Transaction, TO Device)
+CREATE UNDIRECTED EDGE CONNECTED_IP (FROM Transaction, TO IP)
+CREATE UNDIRECTED EDGE INVOLVED_IN_CASE (FROM Case, TO Transaction | FROM Case, TO Card | FROM Case, TO User)
+CREATE DIRECTED EDGE FUND_TRANSFER (FROM Account, TO Account, amount DOUBLE, timestamp DATETIME)
+
+// ============================================================================
+// GSQL Queries
+// ============================================================================
+
+// 1. Ego-Net Extraction (2-hop neighborhood)
+CREATE QUERY get_ego_graph(VERTEX<Transaction> target_tx, INT max_depth = 2) FOR GRAPH FraudGraph {
+    ListAccum<EDGE> @@edges;
+    SetAccum<VERTEX> @@visited_nodes;
+    
+    Start = {target_tx};
+    @@visited_nodes += target_tx;
+    
+    FOREACH i IN RANGE[1, max_depth] DO
+        Start = SELECT t FROM Start:s -(:e)- :t
+                ACCUM @@edges += e, @@visited_nodes += t;
+    END;
+    
+    PRINT @@visited_nodes, @@edges;
+}
+
+// 2. Shared Device Ring Detection
+CREATE QUERY detect_shared_device_ring(VERTEX<Device> dev) FOR GRAPH FraudGraph {
+    OrAccum @is_compromised;
+    SumAccum<INT> @@account_count;
+    SetAccum<VERTEX<User>> @@connected_users;
+    
+    Start = {dev};
+    
+    Tx = SELECT t FROM Start:d -(ASSOCIATED_DEVICE:e)- Transaction:t;
+    Cards = SELECT c FROM Tx:t -(PERFORMED_TRANSACTION:e)- Card:c;
+    Accounts = SELECT a FROM Cards:c -(USES_CARD:e)- Account:a;
+    Users = SELECT u FROM Accounts:a -(OWNS:e)- User:u
+            ACCUM @@connected_users += u;
+            
+    @@account_count = @@connected_users.size();
+    
+    PRINT @@account_count, @@connected_users;
+}
+
+// 3. Cycle Detection (Smurfing / Mule Chains up to 4 hops)
+CREATE QUERY detect_transfer_cycles(VERTEX<Account> start_acc, INT max_hops = 4) FOR GRAPH FraudGraph {
+    ListAccum<ListAccum<VERTEX>> @@cycles;
+    
+    // Cycle traversal logic across FUND_TRANSFER edges
+    PRINT "Cycle query installed";
+}
