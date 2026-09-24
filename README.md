@@ -215,13 +215,24 @@ Features:
 │   ├── tests/           # Unit + integration tests
 │   └── requirements.txt
 ├── cases/               # 20 benchmark JSON deliverables (HHG-001..HHG-020)
-├── docs/                # Architecture, flow, testing documentation
 ├── tests/               # End-to-end pipeline tests
-├── web-console/         # Next.js 14 forensic command center
+├── web-console/         # Next.js 14 forensic command center (Vercel-ready)
+├── vercel.json          # One-click Vercel deployment config
 ├── run_server.py        # Server entry point
 ├── .env.example         # Environment template
 └── pytest.ini           # Test configuration
 ```
+
+---
+
+## Vercel Deployment
+
+The web console is completely Vercel-ready and can be deployed with zero additional configuration:
+
+1. Import this repository in [Vercel](https://vercel.com).
+2. The root `vercel.json` automatically configures the Next.js build.
+3. (Optional) Set `BACKEND_URL` to point to a deployed FastAPI instance, or leave unset to use the bundled benchmark dataset with real-time interactive step-up simulation.
+4. Deploy!
 
 ---
 

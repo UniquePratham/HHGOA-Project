@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "TigerGraph Agentic Fraud Investigation & Next-Best Action Platform",
   "scripts": {
+    "build": "npm --prefix web-console run build",
+    "start": "npm --prefix web-console run start",
+    "dev": "npm --prefix web-console run dev",
     "dev:backend": "python run_server.py",
     "dev:frontend": "npm --prefix web-console run dev",
     "benchmark": "python agent-core/benchmark/run_benchmark.py",
