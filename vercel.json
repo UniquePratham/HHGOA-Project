@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "if [ -d \"web-console\" ]; then cd web-console && npm install; else npm install; fi",
+  "buildCommand": "if [ -d \"web-console\" ]; then cd web-console && npm run build; else npm run build; fi"
+}
