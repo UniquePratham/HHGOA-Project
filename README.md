@@ -1,6 +1,6 @@
 # TigerGraph Agentic Fraud Investigation & Next-Best Action Platform
 
-> **HHGOA Hackathon Submission** — Autonomous fraud investigation agent powered by TigerGraph graph traversal, deterministic GraphRAG reasoning, dual-stage Next-Best Action decisions, and FinCEN SAR narrative generation.
+> Autonomous fraud investigation agent powered by TigerGraph graph traversal, deterministic GraphRAG reasoning, dual-stage Next-Best Action decisions, and FinCEN SAR narrative generation.
 
 ---
 
@@ -82,8 +82,8 @@ All 20 benchmark cases run through this full pipeline with deterministic, reprod
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/hhgoa-tigergraph-fraud.git
-cd hhgoa-tigergraph-fraud
+git clone https://github.com/UniquePratham/tigergraph-fraud-investigation.git
+cd tigergraph-fraud-investigation
 
 # Python dependencies
 pip install -r agent-core/requirements.txt
@@ -254,4 +254,4 @@ MIT
 
 ## Team
 
-**HHGOA Team** — Built for the TigerGraph Graph + AI Hackathon
+Built for the TigerGraph Graph + AI Hackathon

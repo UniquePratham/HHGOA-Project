@@ -1,5 +1,5 @@
 // ============================================================================
-// TigerGraph GSQL Schema: Fraud Investigation Knowledge Graph (HHGOA IEEE-CIS)
+// TigerGraph GSQL Schema: Fraud Investigation Knowledge Graph (IEEE-CIS)
 // ============================================================================
 
 CREATE GRAPH FraudGraph ()

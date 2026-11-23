@@ -1,5 +1,5 @@
 {
-  "name": "hhgoa-tigergraph-agentic-fraud",
+  "name": "tigergraph-fraud-investigation",
   "version": "1.0.0",
   "description": "TigerGraph Agentic Fraud Investigation & Next-Best Action Platform",
   "scripts": {
@@ -18,6 +18,6 @@
     "agentic-ai",
     "next-best-action"
   ],
-  "author": "HHGOA Team",
+  "author": "Pratham Agarwal",
   "license": "MIT"
 }

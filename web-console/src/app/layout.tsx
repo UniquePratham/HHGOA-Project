@@ -2,7 +2,7 @@ import "./globals.css";
 import React from "react";
 
 export const metadata = {
-  title: "TigerGraph Agentic Fraud Console | HHGOA",
+  title: "TigerGraph Agentic Fraud Console",
   description: "Next-generation fraud investigation, uncertainty assessment, and next-best action platform.",
 };
 

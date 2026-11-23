@@ -17,7 +17,7 @@ from api.static_console import CONSOLE_HTML
 
 app = FastAPI(
     title="TigerGraph Agentic Fraud Investigation API",
-    description="Backend service powering the HHGOA Hackathon Agentic Fraud & Next-Best Action Platform",
+    description="Backend service powering the TigerGraph Agentic Fraud Investigation & Next-Best Action Platform",
     version="1.0.0",
 )
 
